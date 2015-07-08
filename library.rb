@@ -24,11 +24,19 @@ class Library
   
   def add_book(i, b_name, a_name)
     shelves[i].add_book(b_name, a_name)
-    puts "Added book to #{shelves[i].name}"
   end
   
-  def remove_book
-    puts "Remove book"
+  def remove_book(to_remove)
+    shelves.each do |s|
+      i = 0
+      while i < s.books.length
+        if s.books[i].title == to_remove
+          s.books.delete_at(i)
+          return true
+        end
+        i += 1
+      end
+    end  
   end
   
   def view_books
@@ -49,7 +57,6 @@ class Shelf
     @books.push(Book.new(b_name, a_name))
   end
   
-  
 end
 
 class Book
@@ -65,13 +72,15 @@ end
 
 #Methods
 def add_book(my_library)
-  print "Book name: "
+  puts
+  print "Title: "
   b_name = gets.chomp
   print "Author: "
   a_name = gets.chomp
   
   puts "0: New shelf"
   i = 0
+  
   while i < my_library.shelves.length
     puts "#{i+1}: #{my_library.shelves[i].name}"
     i+=1
@@ -85,13 +94,22 @@ def add_book(my_library)
     my_library.add_shelf(s_name)
     my_library.add_book(i, b_name, a_name)
   else
-    puts "#{my_library.shelves[choice-1].name}"
+    my_library.add_book(choice-1, b_name, a_name)
     
   end
       
 end
 
+def remove_book(my_library)
+  puts
+  print "Title of book to be removed: "
+  to_remove = gets.chomp
+  my_library.remove_book(to_remove)
+  
+end
+  
 def view_books(my_library)
+  puts
   my_library.shelves.each do |s|
     puts s.name
     s.books.each do |b|
@@ -123,7 +141,7 @@ while choice != 0 do
     when 1
     add_book(my_library)
     when 2
-      my_library.remove_book
+    remove_book(my_library)
     when 3
     view_books(my_library)
   end

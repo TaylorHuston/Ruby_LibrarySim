@@ -23,7 +23,8 @@ class Library
   end
   
   def add_book(i, b_name, a_name)
-    puts "Add book"
+    shelves[i].add_book(b_name, a_name)
+    puts "Added book to #{shelves[i].name}"
   end
   
   def remove_book
@@ -37,15 +38,22 @@ class Library
 end
 
 class Shelf
-  attr_reader :name
-  
+  attr_reader :name, :books
+
   def initialize(s_name)
     @name = s_name
+    @books = []
   end
+
+  def add_book(b_name, a_name)
+    @books.push(Book.new(b_name, a_name))
+  end
+  
   
 end
 
 class Book
+  attr_reader :title, :author
   
   def initialize(title, author)
     @title = title
@@ -75,12 +83,22 @@ def add_book(my_library)
     print "Shelf name: "
     s_name = gets.chomp
     my_library.add_shelf(s_name)
-    #my_library.add_book(b_name, a_name)
+    my_library.add_book(i, b_name, a_name)
   else
     puts "#{my_library.shelves[choice-1].name}"
     
   end
       
+end
+
+def view_books(my_library)
+  my_library.shelves.each do |s|
+    puts s.name
+    s.books.each do |b|
+      print "#{b.title} "
+    end
+    puts
+  end
 end
 
 
@@ -107,7 +125,7 @@ while choice != 0 do
     when 2
       my_library.remove_book
     when 3
-      my_library.view_books
+    view_books(my_library)
   end
 end
   

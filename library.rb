@@ -28,19 +28,8 @@ class Library
   
   def remove_book(to_remove)
     shelves.each do |s|
-      i = 0
-      while i < s.books.length
-        if s.books[i].title == to_remove
-          s.books.delete_at(i)
-          return true
-        end
-        i += 1
-      end
+      s.books.delete(to_remove.to_sym)
     end  
-  end
-  
-  def view_books
-    puts "View books"
   end
   
 end
@@ -50,11 +39,11 @@ class Shelf
 
   def initialize(s_name)
     @name = s_name
-    @books = []
+    @books = {}
   end
 
   def add_book(b_name, a_name)
-    @books.push(Book.new(b_name, a_name))
+    @books[b_name.to_sym] = Book.new(b_name, a_name)
   end
   
 end
@@ -112,8 +101,8 @@ def view_books(my_library)
   puts
   my_library.shelves.each do |s|
     puts s.name
-    s.books.each do |b|
-      print "#{b.title} "
+    s.books.each do |title, book|
+      print "#{title.to_s} "
     end
     puts
   end
@@ -128,10 +117,10 @@ choice = 1
 while choice != 0 do
   puts
   puts "What would you like to do?"
-  puts "0: Quit"
   puts "1: Add a book"
   puts "2: Remove a book"
   puts "3: View all books"
+  puts "0: Quit"
   puts
   
   print "Selection: "

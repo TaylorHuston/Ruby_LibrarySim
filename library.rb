@@ -7,14 +7,14 @@ class Library
   end
   
   def add_shelf(s_name)
-#   i = 0
+   i = 0
     
-#    while i < shelves.length 
-#      if s_name == shelves[i].name 
-#        return false
-#      end
-#      i += 1
-#    end
+    while i < shelves.length 
+      if s_name == shelves[i].name 
+        return false
+      end
+      i += 1
+    end
     
     shelves.push(Shelf.new(s_name))
     
@@ -66,25 +66,33 @@ def add_book(my_library)
   b_name = gets.chomp
   print "Author: "
   a_name = gets.chomp
-  
-  puts "0: New shelf"
+  puts
+
   i = 0
   
   while i < my_library.shelves.length
     puts "#{i+1}: #{my_library.shelves[i].name}"
     i+=1
   end
-      
+  puts "0: New shelf"    
+
+  puts
+  print "Which shelf: "
   choice = gets.chomp.to_i
       
   if choice == 0
-    print "Shelf name: "
-    s_name = gets.chomp
-    my_library.add_shelf(s_name)
+    loop do
+      puts
+      print "Shelf name: "
+      s_name = gets.chomp
+      if my_library.add_shelf(s_name)
+        break
+      end
+      puts "Shelf already exists"
+    end
     my_library.add_book(i, b_name, a_name)
   else
-    my_library.add_book(choice-1, b_name, a_name)
-    
+    my_library.add_book(choice-1, b_name, a_name)    
   end
       
 end
@@ -105,11 +113,16 @@ def view_books(my_library)
       print "#{title.to_s} "
     end
     puts
+    puts
   end
 end
 
 
 #Main
+puts "/*********************/"
+puts "Welcome to the Library!"
+puts "/*********************/"
+
 my_library = Library.new
 
 choice = 1

@@ -68,33 +68,34 @@ def add_book(my_library)
   a_name = gets.chomp
   puts
 
-  i = 0
-  
-  while i < my_library.shelves.length
-    puts "#{i+1}: #{my_library.shelves[i].name}"
-    i+=1
-  end
-  puts "0: New shelf"    
+  loop do
+    i = 0
 
-  puts
-  print "Which shelf: "
-  choice = gets.chomp.to_i
-      
-  if choice == 0
-    loop do
+    while i < my_library.shelves.length
+      puts "#{i+1}: #{my_library.shelves[i].name}"
+      i+=1
+    end
+    puts "0: New shelf"    
+
+    puts
+    print "Which shelf: "
+    choice = gets.chomp.to_i
+
+    if choice == 0
       puts
       print "Shelf name: "
       s_name = gets.chomp
-      if my_library.add_shelf(s_name)
-        break
+      if my_library.add_shelf(s_name) == false
+        puts "Shelf already exists"
+        next
       end
-      puts "Shelf already exists"
+      my_library.add_book(i, b_name, a_name)
+      break
+    else
+      my_library.add_book(choice-1, b_name, a_name)
+      break
     end
-    my_library.add_book(i, b_name, a_name)
-  else
-    my_library.add_book(choice-1, b_name, a_name)    
-  end
-      
+  end 
 end
 
 def remove_book(my_library)
